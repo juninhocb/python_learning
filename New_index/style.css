@@ -17,36 +17,6 @@ body {
   margin-top: -50px; 
 }
 
-	button.css3button {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	color: #ffffff;
-	padding: 10px 20px;
-	background: -moz-linear-gradient(
-		top,
-		#000000 0%,
-		#588fad);
-	background: -webkit-gradient(
-		linear, left top, left bottom,
-		from(#000000),
-		to(#588fad));
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
-	border-radius: 6px;
-	border: 1px solid #1a1b1c;
-	-moz-box-shadow:
-		0px 1px 3px rgba(077,069,077,0.5),
-		inset 0px 0px 1px rgba(255,255,255,1);
-	-webkit-box-shadow:
-		0px 1px 3px rgba(077,069,077,0.5),
-		inset 0px 0px 1px rgba(255,255,255,1);
-	box-shadow:
-		0px 1px 3px rgba(077,069,077,0.5),
-		inset 0px 0px 1px rgba(255,255,255,1);
-	text-shadow:
-		0px -1px 0px rgba(000,000,000,0.7),
-		0px 1px 0px rgba(255,255,255,0.3);
-}
 
 #cabecalho{
 	background: linear-gradient(to bottom, gray, blue, transparent);
@@ -56,18 +26,35 @@ body {
 
   
 #appearance-select{
-      background: url(http://www.webcis.com.br/images/imagens-noticias/select/ico-seta-select.gif) no-repeat #354880;  
+      background: url(http://www.webcis.com.br/images/imagens-noticias/select/ico-seta-select.gif) no-repeat #354880 ;  
       background-position: 200px center;  
-      width: 270px; 
-      height:25px; 
+      width: 200px; 
+      height:30px; 
       font-family:Arial, Helvetica, sans-serif; 
       font-size:15px; 
       color:#fff; 
       text-indent: 0.01px; 
       text-overflow: "";       
       select::-ms-expand {display: none;}
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateY(+850%) 	
+     	
      
   
 }
+#voltar {
+	
+      position: absolute;
+      left: 50%;
+      top: 100%
+      padding: 400px;
+      transform: translateX(-50%) translateY(+3780%);
+
+
+}
+
+
 
 

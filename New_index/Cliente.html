@@ -4,6 +4,7 @@
    <meta charset="UTF-8">
    <title> Clientes </title> 
    <link rel="stylesheet" type="text/css" href="style.css" />
+   
 	<style>
      		body{
                          margin: 0;
@@ -12,7 +13,7 @@
          
  			}
          #menu ul{ 
-              margin: 225; 
+              margin: 0; 
               background-color: "Black";
               list-style: none; 
          } 
@@ -44,11 +45,23 @@
 </h1>
 
  
- 
 <body> 
-<div style= "text-align: center;">
- <!-- <font size="5" color="9C9C9C" face="Calibri"> Lista de Clientes: <font/> -->
- <select id="appearance-select">
+<div id="menu"> 
+     <ul> 
+	<li>
+	<a href="Cad_Cliente.html">  Cadastrar      </a> </li>
+	<li>
+	<a href="Alt_Cliente.html"> Alterar</a> </li>
+	<li> <a href="Exc_Cliente.html"> Excluir</a>  </li>
+	<li> <a href = "index.html"> Voltar </a> </li>
+     </ul>
+	
+  
+
+  </div>
+
+<div style= "text-align: center;" >
+ <select id="appearance-select"> 
 
 	<option>Selecione o Cliente </option>
 	<option>Cliente 1 </option>
@@ -57,30 +70,8 @@
 
 </select>
 </div>
-<div id="menu" style= "text-align: center;"> 
-<font size="3" color="White" face="Verdana"> 
-     <ul> 
-	<li>
-	<a href="Cad_Cliente.html"> 
-	<button type="button" name="" value="" class="css3button"> Cadastrar</button>
-	      </a> 
-		</li>
-	<li>
-	<a href="Alt_Cliente.html"> 
-	<button type="button" name="" value="" class="css3button"> Alterar</button>
-	    </a> 
-		</li>
-	<li>
-	<li>
-	<a href="Exc_Cliente.html"> 
-	<button type="button" name="" value="" class="css3button"> Excluir</button>
-	    </a> 
-		</li>
-	<li> <a href = "index.html"> Voltar </a><li>
-     </ul>
-  
-    <font/>
-  </div>
+
+
 </body>  
 
   </html>
