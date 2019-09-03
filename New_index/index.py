@@ -41,19 +41,19 @@ def Cad_cliente():
 def Cad_Veiculo():
     return render_template('Cad_Veiculo.html')
 
-@app.route('/incluir_usuario')
-def incluir_usuario():
-    nome= request.args.get("nome")
-    snome= request.args.get("snome")
+@app.route("/incluirUsuario", methods = ['post', 'get'])
+def incluir():
+    nome= request.form["nome"]
+    snome= request.form["snome"]
     sexo= request.args.get("sexo")
-    email= request.args.get("email")
-    tel= request.args.get("telefone")
-    cidade= request.args.get("cidade")
-    estado= request.args.get("estado")
+    email= request.form["email"]
+    tel= request.form["telefone"]
+    cidade= request.form["cidade"]
+    estado= request.form["estado"]
     nova = Usuario(nome,snome,sexo,email,tel,cidade,estado)
     usuarios.append(nova)
 
-    return Cliente()
+    return redirect("/Cliente")
 
 @app.route("/excluir_usuario")
 def excluir_usuario():
@@ -123,6 +123,6 @@ def logout():
     return redirect("/")
 
 
-app.run(debug=True, port=4000)
+app.run(debug=True, port=4001)
 
 
