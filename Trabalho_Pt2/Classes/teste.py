@@ -9,31 +9,6 @@ class BaseModel(Model):
         database = DB
    
 
-class Disciplina(BaseModel):
-
-    nome = CharField()
-    nota = FloatField()
-    aprovado = BooleanField()
-
-class Curso(BaseModel):
-
-    nome = CharField()
-
-
-class Aluno (BaseModel):
-
-    nome = CharField()
-    #endereco = CharField()
-    cursos = ManyToManyField(Curso)
-
-
-
-class Matricula(BaseModel):
-
-    aluno = ForeignKeyField(Aluno)
-    disciplina = ForeignKeyField(Disciplina)
-    numero = IntegerField()   #numero da matricula
-
 class Usuario(BaseModel):
     nome = CharField()
     sobrenome = CharField()
@@ -73,6 +48,14 @@ class Mecanico(BaseModel):
     usuarios = ForeignKeyField(Usuario)
     preco = FloatField()
 
+class Peca(BaseModel):
+    nome = CharField()
+    preco = FloatField()
+
+class Engenheiro(BaseModel):
+    nome = CharField()
+    atribuicao = CharField()
+ 
 
 
 
@@ -85,76 +68,106 @@ if __name__ == "__main__":  # se estiver rodando esse programa, executa!  (evita
    
     try:
         DB.connect()
-        DB.create_tables([Aluno,Disciplina,Matricula,Aluno.cursos.get_through_model(),Curso, Usuario, Veiculo, Fornecedores, 
-        Informacao, Diagnostico, Problema, Marca, Mecanico])
+        DB.create_tables([Usuario, Veiculo, Fornecedores,
+        Informacao, Diagnostico, Problema, Marca, Mecanico, Peca, Engenheiro, Diagnostico.infos.get_through_model()])
     except OperationalError as e:
         print('erro ao criar tabela:' +str(e))
 
-
-    marco = Aluno.create(nome= 'Marco Priotto ')
-    marcao = Aluno.create(nome = 'Marcao Prioto')
-    mecanica = Curso.create(nome = 'Mecanica')
-    eletronica = Curso.create(nome= 'Eletronica')
-    eletronica.alunos.add(marcao)
 
     fornecedor = Fornecedores.create(nome = 'Marco Peças')
     informacao = Informacao.create(tipo = 'Perigosa', nome = 'Situacao Carburador', conteudo = 'Biela')
     diagnostico = Diagnostico.create(estado = 'Com Falhas')
     informacao2 = Informacao.create(tipo = 'Perigosa', nome = 'Motor', conteudo = 'Problemas de Ignição')
     problemas = Problema.create(nome = 'Suspensão', possuiManutencao = 'FALSE')
-    marca = Marca.create(nome = 'Audi')
-    
-
-
+    audi = Marca.create(nome = 'Audi')
+    peca1 = Peca.create(nome = 'Pistão', preco = '12.2' )
+    marco1 = Engenheiro.create (nome = 'Marco Priotto', atribuicao = 'Mecanica')
     marco = Usuario.create(nome = 'Marco', sobrenome = 'Prioto', sexo = 'masculino',
         email = 'm@gmail.com', telefone = '2439', cidade = 'Pirai', estado = 'PR')
-
-
-    for a in Aluno.select():
-        print(a.nome)
-        for c in a.cursos:
-            print(c.nome)
-
-    print('USUARIO:')
-    for u in Usuario.select():
-        print(u.nome)
-        print(u.sobrenome)
-        print(u.sexo)
-        print(u.email)
-        print(u.telefone)
-        print(u.cidade)     
-        print(u.estado)
-
+    pedrao = Usuario.create(nome = 'Pedrao', sobrenome = 'Prioto', sexo = 'masculino',
+        email = 'p@gmail.com', telefone = '423453', cidade = 'Boa Vista', estado = 'RR')
+    mecanico = Mecanico.create (usuarios = pedrao , preco = 3)
+    informacao2.diagnosticos.add(diagnostico)
+    
     veiculo = Veiculo.create(marca = 'Audi', modelo = 'A3', chassi = '3244', nmrPlaca = '2984ZZ', ano = '2014')
 
-    print('VEICULO: ')
+    
+    #1
+    print('Usuarios:')
+    for u in Usuario.select():
+        print('Nome:', u.nome)
+        print('Sobrenome:',u.sobrenome)
+        print('Sexo:',u.sexo)
+        print('Email',u.email)
+        print('Telefone:', u.telefone)
+        print('Cidade:', u.cidade)    
+        print('Estado:', u.estado)
+
+    #2
+    print('\n\n')
+    print('Veículos: ')
     for v in Veiculo.select():
-        print(v.marca)
-        print(v.modelo)
-        print(v.chassi)
-        print(v.nmrPlaca)
-        print(v.ano)
-
-    print('FORNECEDORES:')
+        print('Marca:' ,v.marca)
+        print('Modelo:' ,v.modelo)
+        print('Chassi', v.chassi)
+        print('Número da Placa:' ,v.nmrPlaca)
+        print('Ano', v.ano)
+    #3
+    print('\n\n')
+    print('Fornecedores:')
     for f in Fornecedores.select():
-        print(f.nome)
-    
-    print('INFORMACOES:')
+        print('Nome do Fornecedor:',f.nome)
+        
+    #4
+    print('\n\n')
+    print('Informações:')
     for i in Informacao.select():
-        print(i.tipo)
-        print(i.nome)
-        print(i.conteudo)
-
-    print('DIAGNOSTICOS:')
+        print('Tipo de Informacao:',i.tipo)
+        print('Nome da Informacao',i.nome)
+        print('Conteudo da Informacao',i.conteudo)
+    #5
+    print('\n\n')
+    print('Diagnósticos:')
     for d in Diagnostico.select():
-        print(d.estado)
-    
-    print('PROBLEMAS:')
+        print('Estado do Diagnostico:' ,d.estado)
+        for i in d.infos:
+            print('Tipo',i.tipo)
+            print('Nome', i.nome)
+            print('Conteudo', i.conteudo)
+   #6
+    print('\n\n')
+    print('Problemas:')
     for p in Problema.select():
-        print(p.nome)
-        print(p.possuiManutencao)
-    
-    print('MARCA:')
+        print('Nome do Problema:',p.nome)
+        print('Possuí Manutenção?:', p.possuiManutencao)
+    #7
+    print('\n\n')
+    print('Marcas:')
     for m in Marca.select():
-        print(m.nome)
-
+        print('Nome da Marca:', m.nome)
+   #8
+    print('\n\n')
+    print('Pecas:')
+    for pe in Peca.select():
+        print('Nome da Peça: ',pe.nome)
+    
+    #9
+    print('\n\n')    
+    print('Engenheiros:')
+    for e in Engenheiro.select():
+        print('Nome:', e.nome)
+    
+    #10
+    print('\n\n')
+    print('Mecanicos:')
+    for m in Mecanico.select():
+        print('Nome:',m.usuarios.nome)
+        print('Sobrenome:',m.usuarios.sobrenome)
+        print('Sexo:', m.usuarios.sexo)
+        print('Email:',m.usuarios.email)
+        print('Telefone: ', m.usuarios.telefone)
+        print('Cidade:', m.usuarios.cidade)
+        print('Estado: ', m.usuarios.estado)
+        print('Preço: ', 'R$' + str(m.preco))
+        
+        
