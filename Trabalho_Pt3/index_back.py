@@ -27,18 +27,22 @@ def Diagnostico():
 
 @app.route("/incluirUsuario", methods = ['post'])
 def incluir():
-    nome= request.form["nome"]
-    snome= request.form["snome"]
-    sexo= request.form["sexo"]
-    email= request.form["email"]
     
-    tel= request.form["telefone"]
-    cidade= request.form["cidade"]
-    estado= request.form["estado"]
+    msg = jsonify({"message":"ok"})
+
+    dados = request.get_json(force = True)
+
+    nome= dados['nome']
+    snome= dados['snome']
+    sexo= dados['sexo']
+    email= dados['email']
+    tel= dados['telefone']
+    cidade= dados['cidade']
+    estado= dados['estado']
     Usuario.create(nome = nome, sobrenome = snome, sexo = sexo, email = email, telefone = tel, cidade= cidade
     , estado = estado)
 
-    return redirect("/Cliente")
+    return msg
 
 @app.route("/incluirVeiculo", methods = ['post'])
 def incluirV():

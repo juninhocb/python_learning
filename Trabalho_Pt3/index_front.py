@@ -52,18 +52,33 @@ def Cad_Veiculo():
 
 @app.route("/incluirUsuario", methods = ['post'])
 def incluir():
+    #primeiro pega-se as variáveis 
     nome= request.form["nome"]
     snome= request.form["snome"]
     sexo= request.form["sexo"]
     email= request.form["email"]
-    
     tel= request.form["telefone"]
     cidade= request.form["cidade"]
     estado= request.form["estado"]
-    Usuario.create(nome = nome, sobrenome = snome, sexo = sexo, email = email, telefone = tel, cidade= cidade
-    , estado = estado)
+    #Usuario.create(nome = nome, sobrenome = snome, sexo = sexo, email = email, telefone = tel, cidade= cidade
+    #, estado = estado)
+    #par = {"nome":nome, "snome":snome, "sexo ":sexo, "email":email, 
+    #"telefone":tel, "cidade":cidade, "estado": estado}
 
-    return redirect("/Cliente")
+    par = {"nome": "k", "snome": "a", "sexo": "M", "email": "juca", "telefone": "43234", "cidade": "sfd", "estado": "RR"}
+
+
+    req = requests.post(url='http://localhost:4001/incluirUsuario', json = par)
+
+    resp = req.json()
+
+    if resp['message'] == 'ok':
+        msg = "Pessoa incluida com sucesso"
+        return redirect("/Cliente")
+    else: 
+        msg = "erro: " + resp['details']
+
+    return render_template("/Cliente")
 
 @app.route("/incluirVeiculo", methods = ['post'])
 def incluirV():
