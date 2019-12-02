@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, session
 from usuario import Usuario
 from veiculo import Veiculo
 from peewee import *
+from SENSOR import *
+from Dados import *
 import os
 import requests
 from playhouse.shortcuts import dict_to_model
@@ -9,12 +11,48 @@ from playhouse.shortcuts import dict_to_model
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '43r78934yt6y5907'
 
+marco = Veiculo.create(marca = 'Audi', modelo = 'A3', chassi = '3244',
+        nome = 'Marco', nmrPlaca = '2984ZZ', ano = '2014')
+
+for v in Veiculo.select():
+    print('MARCA DO VEÍCULO: ')
+    print(v.marca)
+    print('MODELO DO VEÍCULO: ')
+    print(v.modelo)
+    print('CHASSI DO VEÍCULO: ')
+    print(v.chassi)
+    print('NOME DO DONO VEÍCULO: ')
+    print(v.nome)
+    print('NUMERO DE PLACA DO VEÍCULO: ')
+    print(v.nmrPlaca)
+    print('ANO DO VEÍCULO: ')
+    print(v.ano)
+
+marco = Usuario.create(nome = 'Marco', sobrenome = 'Prioto', sexo = 'masculino',
+        email = 'm@gmail.com', telefone = '2439', cidade = 'Pirai', estado = 'PR')
+    
+
+for u in Usuario.select():
+    print('NOME DO USUÁRIO: ')
+    print(u.nome)
+    print('SOBRENOME DO USUÁRIO ')
+    print(u.sobrenome)
+    print('SEXO DO USUÁRIO ')
+    print(u.sexo)
+    print('EMAIL DO USUÁRIO ')
+    print(u.email)
+    print('TELEFONE DO USUÁRIO ')
+    print(u.telefone)
+    print('CIDADE DO USUÁRIO ')
+    print(u.cidade)
+    print('ESTADO DO USUÁRIO ')
+    print(u.estado)
 
 @app.route('/')
 def index():
     return render_template('index.html')
 @app.route('/Cliente')
-def Cliente():
+def Cliente():   #equivalente a listar.... 
     dados_usuarios = requests.get('http://localhost:4001/Cliente')
     json_usuarios = dados_usuarios.json()
     usuarios = []
@@ -25,18 +63,40 @@ def Cliente():
     return render_template('Cliente.html', lista = usuarios)
 @app.route('/Veiculos')
 def Veiculos():
-    dados_veiculos = requests.get('http://localhost:4001/Veiculos')
-    json_veiculos = dados_veiculos.json()
-    veiculos = []
     
-    for veiculos_json in json_veiculos:
-        v = dict_to_model(Veiculo, veiculos_json)
-        veiculos.append(v)
+    #dados_veiculos = requests.get('link da nuvem')
+    #json_veiculos = dados_veiculos.json()
+    #veiculos = []
     
-    return render_template('Veiculos.html', lista = veiculos)
+    #for veiculos_json in json_veiculos:
+    #    v = dict_to_model(Veiculo, veiculos_json)
+    #    veiculos.append(v)
+    
+    return render_template('Veiculos.html')
 @app.route('/Diagnosticos')
 def Diagnostico():
-    return render_template('Diagnosticos.html')
+    
+    # obter os dados da nuvem
+    dados = requests.get('http://thinger.io.bucket.s3-eu-west-1.amazonaws.com/20191130T233255.juninhocb.DadosRPM.K0gud7yC.json') 
+
+    # incorporar os dados json em objetos python/peewee (dict to model)
+    json_dados = dados.json()
+    dados =[]
+    # passar os objetos para a página exibir
+    #for i in dados:
+    #    d = dict_to_model(Dados, i)
+    #    dados.append(d)
+    dados = [
+        Dados(rpm= json_dados[0]['val'], vel= 108, temp= 60, acel = 32, dist= 15 ),
+        Dados(rpm= json_dados[1]['val'], vel= 18, temp= 60, acel = 32, dist= 10 ),
+        Dados(rpm= json_dados[2]['val'], vel= 8, temp= 60, acel = 32, dist= 5 ),
+        Dados(rpm= json_dados[-1]['val'], vel= 10, temp= 60, acel = 32, dist= 1 )
+    ]
+
+    primeiro = dados[0]
+    ultimo = dados[-1]
+
+    return render_template('Diagnosticos.html', dados = [primeiro,ultimo])
 @app.route('/Contato')
 def Contato():
     return render_template('Contato.html')
@@ -60,13 +120,8 @@ def incluir():
     tel= request.form["telefone"]
     cidade= request.form["cidade"]
     estado= request.form["estado"]
-    #Usuario.create(nome = nome, sobrenome = snome, sexo = sexo, email = email, telefone = tel, cidade= cidade
-    #, estado = estado)
-    #par = {"nome":nome, "snome":snome, "sexo ":sexo, "email":email, 
-    #"telefone":tel, "cidade":cidade, "estado": estado}
 
-    par = {"nome": "k", "snome": "a", "sexo": "M", "email": "juca", "telefone": "43234", "cidade": "sfd", "estado": "RR"}
-
+    par = {"nome": nome, "snome": snome, "sexo": sexo, "email": email, "telefone": tel, "cidade": cidade, "estado": estado}
 
     req = requests.post(url='http://localhost:4001/incluirUsuario', json = par)
 

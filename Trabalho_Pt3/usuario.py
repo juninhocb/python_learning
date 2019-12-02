@@ -48,12 +48,19 @@ if __name__ == "__main__":  # se estiver rodando esse programa, executa!  (evita
 
 
     for u in Usuario.select():
+        print('NOME DO USUÁRIO: ')
         print(u.nome)
+        print('SOBRENOME DO USUÁRIO ')
         print(u.sobrenome)
+        print('SEXO DO USUÁRIO ')
         print(u.sexo)
+        print('EMAIL DO USUÁRIO ')
         print(u.email)
+        print('TELEFONE DO USUÁRIO ')
         print(u.telefone)
+        print('CIDADE DO USUÁRIO ')
         print(u.cidade)
+        print('ESTADO DO USUÁRIO ')
         print(u.estado)
 
        

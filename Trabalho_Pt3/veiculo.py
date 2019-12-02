@@ -15,7 +15,7 @@ class Veiculo(BaseModel):
     modelo = CharField()
     chassi = IntegerField()
     nome = CharField()
-    nmrPlaca = IntegerField()
+    nmrPlaca = CharField()
     ano = IntegerField()
 
 
@@ -39,11 +39,17 @@ if __name__ == "__main__":  # se estiver rodando esse programa, executa!  (evita
 
 
     for v in Veiculo.select():
+        print('MARCA DO VEÍCULO: ')
         print(v.marca)
+        print('MODELO DO VEÍCULO: ')
         print(v.modelo)
+        print('CHASSI DO VEÍCULO: ')
         print(v.chassi)
+        print('NOME DO DONO VEÍCULO: ')
         print(v.nome)
+        print('NUMERO DE PLACA DO VEÍCULO: ')
         print(v.nmrPlaca)
+        print('ANO DO VEÍCULO: ')
         print(v.ano)
         
 
